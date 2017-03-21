@@ -63,7 +63,7 @@ public class UIManager : ManagerTemplate<UIManager>
         {
             case EGameScene.TITLE:
                 {
-                    //UIPanel_TitleScene.instance.showPanel();
+                    UIPanel_TitleScene.instance.showPanel();
                 }
                 break;
             case EGameScene.MAIN:
