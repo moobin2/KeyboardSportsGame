@@ -37,8 +37,5 @@ Icon?
 ehthumbs.db
 Thumbs.db
 
-resources/
+DownloadAsset/
 NGUI/
-Assets/NGUI.meta
-*.meta
-Assets/NGUI.meta
