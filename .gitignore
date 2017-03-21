@@ -39,3 +39,6 @@ Thumbs.db
 
 resources/
 NGUI/
+Assets/NGUI.meta
+*.meta
+Assets/NGUI.meta
