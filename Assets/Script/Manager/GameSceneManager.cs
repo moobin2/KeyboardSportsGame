@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public enum EGameScene
 {
-    NONE, TITLE,
+    NONE, TITLE, MAIN,
 }
 
 public class GameSceneManager : ManagerTemplate<GameSceneManager>
@@ -14,24 +14,24 @@ public class GameSceneManager : ManagerTemplate<GameSceneManager>
     public EGameScene CurrentScene { get { return currentScene; } }
 
     [Header("fade In out")]
-    //private CameraFadeInOut fadeInOutCtrl = null;
+    private CameraFadeInOut fadeInOutCtrl = null;
     public float FadeOutTime = 0.5f;
     public float FadeInTime = 0.5f;
 
-   // public SceneCtrl CurrentSceneCtrl { get; private set; }
+   public SceneControll CurrentSceneCtrl { get; private set; }
 
     protected override void Init()
     {
-        //if (fadeInOutCtrl == null)
+        if (fadeInOutCtrl == null)
         {
-            //fadeInOutCtrl = GetComponent<CameraFadeInOut>();
-           // if (fadeInOutCtrl == null)
+            fadeInOutCtrl = GetComponent<CameraFadeInOut>();
+            if (fadeInOutCtrl == null)
             {
-                //fadeInOutCtrl = this.gameObject.AddComponent<CameraFadeInOut>();
+                fadeInOutCtrl = this.gameObject.AddComponent<CameraFadeInOut>();
             }
         }
 
-        //UIManager.Instance.initSceneUI(EGameScene.TITLE);
+        UIManager.Instance.initSceneUI(EGameScene.TITLE);
         Debug.Log("<color=lightblue> Manager Initialize =>  </color>" + this.name.ToString());
     }
 
@@ -49,6 +49,11 @@ public class GameSceneManager : ManagerTemplate<GameSceneManager>
                     this.loadScene("", onComplete);
                 }
                 break;
+            case EGameScene.MAIN:
+                {
+                    this.loadScene("", onComplete);
+                }
+                break;
         }
     }
 
@@ -59,15 +64,15 @@ public class GameSceneManager : ManagerTemplate<GameSceneManager>
 
     private IEnumerator coLoadScene(string sceneName, System.Action onComplete)
     {
-        //this.fadeInOutCtrl.FadeOut(this.FadeOutTime);
+        this.fadeInOutCtrl.FadeOut(this.FadeOutTime);
         yield return new WaitForSeconds(this.FadeOutTime);
 
-        //if (CurrentSceneCtrl != null)
+        if (CurrentSceneCtrl != null)
         {
-        //    CurrentSceneCtrl.ReleaseScene();
+            CurrentSceneCtrl.ReleaseScene();
         }
 
-        //UIManager.Instance.hideAllPanel();
+        UIManager.Instance.hideAllPanel();
 
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
         yield return async;
@@ -77,8 +82,8 @@ public class GameSceneManager : ManagerTemplate<GameSceneManager>
             onComplete.Invoke();
         }
 
-        //UIManager.Instance.initSceneUI(currentScene);
+        UIManager.Instance.initSceneUI(currentScene);
         // 로드가 끝난후 페이드 인 들어가게 바꾼다.
-        //this.fadeInOutCtrl.FadeIn(this.FadeInTime);
+        this.fadeInOutCtrl.FadeIn(this.FadeInTime);
     }
 }
