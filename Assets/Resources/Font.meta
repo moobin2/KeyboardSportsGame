@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Prefabs.meta
+guid: 95d712b53d315404cbe00b3731572f71
+folderAsset: yes
+timeCreated: 1489041586
+=======
 guid: 5ec584ebaadf7874c88bee781fd1cdc2
 folderAsset: yes
 timeCreated: 1490077176
+>>>>>>> refs/remotes/origin/master:Assets/Resources/Font.meta
 licenseType: Free
 DefaultImporter:
   userData: 
