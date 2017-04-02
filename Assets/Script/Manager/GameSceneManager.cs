@@ -51,7 +51,7 @@ public class GameSceneManager : ManagerTemplate<GameSceneManager>
                 break;
             case EGameScene.MAIN:
                 {
-                    this.loadScene("", onComplete);
+                    this.loadScene("MainScene", onComplete);
                 }
                 break;
         }
