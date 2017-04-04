@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(FSMAnimation))]
+[RequireComponent(typeof(FSM_Player))]
 public class PlayerController : MonoBehaviour {
 
-    FSMAnimation    FSMAnim;
+    FSM_Player      FSMAnim;
     float           InputTime = 0.2f;
     float           CurrentSpeed;
     float           MaxSpeed = 5.0f;
@@ -17,11 +17,11 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
 	void Start ()
     {
-        FSMAnim = GetComponent<FSMAnimation>();
+        FSMAnim = GetComponent<FSM_Player>();
         Keyboard = GameObject.Find("Keyboard_Button");
         DestPosition = gameObject.transform.localPosition;
 
-        FSMAnim.SetState(eUnitState.Idle);
+        FSMAnim.SetState(UnitState.Idle);
 	}
 	
 	// Update is called once per frame
@@ -63,7 +63,6 @@ public class PlayerController : MonoBehaviour {
             CurrentSpeed = 0.0f;
             IsMoving = true;
         }
-        FSMAnim.currentState = eUnitState.Run;
     }
 
     void KeyBoardInput()
@@ -209,7 +208,7 @@ public class PlayerController : MonoBehaviour {
                     break;
                 case " ":
                     Debug.Log("Space Button");
-                    FSMAnim.SetState(eUnitState.Attack);
+                    FSMAnim.SetState(UnitState.Attack1);
                     //FSMAnim.AttackMotion();
                     break;
                 //default:
