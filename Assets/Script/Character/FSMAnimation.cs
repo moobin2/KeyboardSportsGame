@@ -10,36 +10,44 @@ public enum eUnitState
 [RequireComponent(typeof(Animation))]
 public class FSMAnimation : MonoBehaviour
 {
-    public  eUnitState  CurrentState    = eUnitState.Idle;
-    public  float       LerpTime        = 0.3f;
-    public  float       MoveSpeed       = 5.0f;
-    public  float       CrossFadeTime   = 0.2f;
+    public  eUnitState  currentState    = eUnitState.Idle;
+    public  float       lerpTime        = 0.3f;
+    public  float       moveSpeed       = 5.0f;
+    public  float       crossFadeTime   = 0.2f;
 
-    private Animation   Anim;
-    private Dictionary<string, float> AnimNameList = new Dictionary<string, float>();
+    private Animation   _anim;
+    private Dictionary<string, float> _animNameList = new Dictionary<string, float>();
 
 	// Use this for initialization
 	void Start ()
     {
-        Anim = GetComponent<Animation>();
+        _anim = GetComponent<Animation>();
 
-        foreach (AnimationState AnimState in Anim)
+        foreach (AnimationState AnimState in _anim)
         {
-            AnimNameList.Add(AnimState.clip.name, AnimState.clip.length);
+            _animNameList.Add(AnimState.clip.name, AnimState.clip.length);
             Debug.Log(AnimState.clip.name.ToString() + ": length(" + AnimState.clip.length.ToString() + ")");
         }
 	}
+
+    public void AttackMotion()
+    {
+        Debug.Log("Enter AttackState");
+        _anim.CrossFade("Melee Right Attack 01", crossFadeTime);
+        currentState = eUnitState.Attack;
+        Debug.Log("Exit AttackState");
+    }
 	
 	public void SetState(eUnitState State)
     {
         // 현재 상태와 같다면 리턴
-        if(CurrentState == State)
+        if(currentState == State)
         {
             return;
         }
         Debug.Log("Change Motion");
         // 현재 상태를 바꿔준다
-        CurrentState = State;
+        currentState = State;
 
         // 모션을 바꿔준다.
         switch (State)
@@ -65,41 +73,41 @@ public class FSMAnimation : MonoBehaviour
         }
     }
 
-    IEnumerable Idle()
+    IEnumerator Idle()
     {
         Debug.Log("Idle RunState");
-        Anim.CrossFade("Idle", CrossFadeTime);
+        _anim.CrossFade("Idle", crossFadeTime);
         yield return null;
 
-        while(CurrentState == eUnitState.Idle)
+        while(currentState == eUnitState.Idle)
         {
             yield return null;
         }
     }
 
-    IEnumerable Run()
+    IEnumerator Run()
     {
         Debug.Log("Enter RunState");
-        Anim.CrossFade("Run", CrossFadeTime);
+        _anim.CrossFade("Run", crossFadeTime);
         yield return null;
 
-        while(CurrentState == eUnitState.Run)
+        while(currentState == eUnitState.Run)
         {
             yield return null;
         }
     }
 
-    IEnumerable Attack()
+    IEnumerator Attack()
     {
         Debug.Log("Enter AttackState");
         float Motiontime = 0.0f;
-        Anim.CrossFade("Melee Right Attack 01", CrossFadeTime);
+        _anim.CrossFade("Melee Right Attack 01", crossFadeTime);
         yield return null;
 
-        while (CurrentState == eUnitState.Attack)
+        while (currentState == eUnitState.Attack)
         {
             Motiontime += Time.deltaTime;
-            if(Motiontime > AnimNameList["Melee Right Attack 01"])
+            if(Motiontime > _animNameList["Melee Right Attack 01"])
             {
                 SetState(eUnitState.Idle);
             }
@@ -108,16 +116,16 @@ public class FSMAnimation : MonoBehaviour
         Debug.Log("Exit AttackState");
     }
 
-    IEnumerable Damaged()
+    IEnumerator Damaged()
     {
         float MotionTime = 0.0f;
-        Anim.CrossFade("Take Damage", CrossFadeTime);
+        _anim.CrossFade("Take Damage", crossFadeTime);
         yield return null;
 
-        while(CurrentState == eUnitState.Damaged)
+        while(currentState == eUnitState.Damaged)
         {
             MotionTime += Time.deltaTime;
-            if(MotionTime > AnimNameList["Damaged"])
+            if(MotionTime > _animNameList["Damaged"])
             {
                 SetState(eUnitState.Idle);
             }

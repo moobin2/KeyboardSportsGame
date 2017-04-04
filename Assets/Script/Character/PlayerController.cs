@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour {
             CurrentSpeed = 0.0f;
             IsMoving = true;
         }
-        FSMAnim.CurrentState = eUnitState.Run;
+        FSMAnim.currentState = eUnitState.Run;
     }
 
     void KeyBoardInput()
@@ -210,6 +210,7 @@ public class PlayerController : MonoBehaviour {
                 case " ":
                     Debug.Log("Space Button");
                     FSMAnim.SetState(eUnitState.Attack);
+                    //FSMAnim.AttackMotion();
                     break;
                 //default:
                 //    Debug.Log(Input.inputString);
