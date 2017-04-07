@@ -6,6 +6,6 @@ public class UIPanel_TitleScene : UIPanel_Template<UIPanel_TitleScene>
 {
     public void OnClickStart()
     {
-        GameSceneManager.Instance.ChangeScene(EGameScene.MAIN);
+        Manager_GameScene.Instance.ChangeScene(EGameScene.MAIN);
     }
 }

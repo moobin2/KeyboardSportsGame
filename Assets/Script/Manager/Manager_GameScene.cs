@@ -8,8 +8,9 @@ public enum EGameScene
     NONE, TITLE, MAIN,
 }
 
-public class GameSceneManager : ManagerTemplate<GameSceneManager>
+public class Manager_GameScene : Manager_Template<Manager_GameScene>
 {
+
     private EGameScene currentScene = EGameScene.NONE;
     public EGameScene CurrentScene { get { return currentScene; } }
 
@@ -18,7 +19,7 @@ public class GameSceneManager : ManagerTemplate<GameSceneManager>
     public float FadeOutTime = 0.5f;
     public float FadeInTime = 0.5f;
 
-   public SceneControll CurrentSceneCtrl { get; private set; }
+    public SceneControll CurrentSceneCtrl { get; private set; }
 
     protected override void Init()
     {
@@ -31,7 +32,7 @@ public class GameSceneManager : ManagerTemplate<GameSceneManager>
             }
         }
 
-        UIManager.Instance.initSceneUI(EGameScene.TITLE);
+        Manager_UI.Instance.InitSceneUI(EGameScene.TITLE);
         Debug.Log("<color=lightblue> Manager Initialize =>  </color>" + this.name.ToString());
     }
 
@@ -72,7 +73,7 @@ public class GameSceneManager : ManagerTemplate<GameSceneManager>
             CurrentSceneCtrl.ReleaseScene();
         }
 
-        UIManager.Instance.hideAllPanel();
+        Manager_UI.Instance.HideAllPanel();
 
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
         yield return async;
@@ -82,7 +83,7 @@ public class GameSceneManager : ManagerTemplate<GameSceneManager>
             onComplete.Invoke();
         }
 
-        UIManager.Instance.initSceneUI(currentScene);
+        Manager_UI.Instance.InitSceneUI(currentScene);
         // 로드가 끝난후 페이드 인 들어가게 바꾼다.
         this.fadeInOutCtrl.FadeIn(this.FadeInTime);
     }

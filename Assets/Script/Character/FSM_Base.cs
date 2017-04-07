@@ -4,22 +4,22 @@ using UnityEngine;
 
 public enum UnitState
 {
-    Idle, Run, Dameged, Die,        // 공통모션
-    Attack1, Attack2, Attack3       // 플레이어
+    Idle, Run, Dameged, Die,                    // 공통모션
+    Attack1, Attack2, Attack3, JumpAttack       // 플레이어
 }
 
 [RequireComponent(typeof(Animation))]
 public class FSM_Base : MonoBehaviour
 {
-    public      UnitState _currentState;
-    public      float _crossFadeTime = 0.2f;
+    public      UnitState currentState;
+    public      float crossFadeTime = 0.2f;
     protected   Animation _anim;
     protected   Dictionary<string, float> _animList;
     protected   bool _isChangeState;
 
     // Use this for initialization
 
-    protected virtual void Start()
+    protected void Start()
     {
         Debug.Log("Base Start");
         _anim = GetComponent<Animation>();
@@ -36,10 +36,10 @@ public class FSM_Base : MonoBehaviour
         StartCoroutine("FsmMain");
     }
 
-    public virtual void SetState(UnitState state)
+    public void SetState(UnitState state)
     {
         Debug.Log("Chage to " + state.ToString());
-        _currentState = state;
+        currentState = state;
         _isChangeState = true;
     }
 
@@ -49,10 +49,9 @@ public class FSM_Base : MonoBehaviour
         {
             if (_isChangeState == true)
             {
-                Debug.Log("상태바꾼다~");
                 _isChangeState = false;
-                StartCoroutine(_currentState.ToString());
-                Debug.Log(_currentState.ToString());
+                StartCoroutine(currentState.ToString());
+                Debug.Log(currentState.ToString());
                 yield return null; 
             }
             else
@@ -62,38 +61,38 @@ public class FSM_Base : MonoBehaviour
         }
     }
 
-    protected virtual IEnumerator Idle()
+    protected IEnumerator Idle()
     {
         Debug.Log("Enter IdleState");
-        _anim.CrossFade("Idle", _crossFadeTime);
+        _anim.CrossFade("Idle", crossFadeTime);
         yield return null;
 
-        while (_currentState == UnitState.Idle)
+        while (currentState == UnitState.Idle)
         {
             yield return null;
         }
         Debug.Log("Exit IdleState");
     }
 
-    protected virtual IEnumerator Run()
+    protected IEnumerator Run()
     {
         Debug.Log("Enter RunState");
-        _anim.CrossFade("Run", _crossFadeTime);
+        _anim.CrossFade("Run", crossFadeTime);
         yield return null;
 
-        while (_currentState == UnitState.Run)
+        while (currentState == UnitState.Run)
         {
             yield return null;
         }
         Debug.Log("Exit RunState");
     }
 
-    protected virtual IEnumerator Damaged()
+    protected IEnumerator Damaged()
     {
         yield return null;
     }
 
-    protected virtual IEnumerator Die()
+    protected IEnumerator Die()
     {
         yield return null;
     }
