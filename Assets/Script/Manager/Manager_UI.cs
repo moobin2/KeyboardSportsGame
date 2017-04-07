@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager : ManagerTemplate<UIManager>
+public class Manager_UI : Manager_Template<Manager_UI>
 {
-    // UIPanel 경로
     public const string uiPanelContainerPath = "GUI/Panel/";
-    private Transform uiPanelContainer;
+    private Transform _uiPanelContainer;
 
     private Dictionary<string, UIPanel_Base> uiPanelDic;    // UIPanel 딕셔너리
     private List<UIPanel_Base> activePanelList;             // 활성화된 패널 리스트
@@ -20,20 +19,20 @@ public class UIManager : ManagerTemplate<UIManager>
         uiRoot.transform.localPosition = Vector3.zero;
         uiRoot.transform.localScale = Vector3.one;
 
-        uiPanelContainer = (new GameObject("PanelContainer")).transform;
-        uiPanelContainer.SetParent(uiRoot.transform);
-        uiPanelContainer.transform.localPosition = Vector3.zero;
-        uiPanelContainer.transform.localScale = Vector3.one;
+        _uiPanelContainer = (new GameObject("PanelContainer")).transform;
+        _uiPanelContainer.SetParent(uiRoot.transform);
+        _uiPanelContainer.transform.localPosition = Vector3.zero;
+        _uiPanelContainer.transform.localScale = Vector3.one;
 
         if (uiPanelDic == null)
         {
             uiPanelDic = new Dictionary<string, UIPanel_Base>();
         }
 
-        loadPanelsFromResources();
+        LoadPanelsFromResources();
     }
 
-    private void loadPanelsFromResources()
+    private void LoadPanelsFromResources()
     {
         UIPanel_Base[] uiPanels = Resources.LoadAll<UIPanel_Base>(uiPanelContainerPath);
 
@@ -41,7 +40,7 @@ public class UIManager : ManagerTemplate<UIManager>
         {
             UIPanel_Base panel = Instantiate(uiPanels[i]) as UIPanel_Base;
 
-            panel.transform.SetParent(uiPanelContainer);
+            panel.transform.SetParent(_uiPanelContainer);
             panel.transform.localPosition = Vector3.zero;
             panel.transform.localScale = Vector3.one;
 
@@ -49,7 +48,7 @@ public class UIManager : ManagerTemplate<UIManager>
         }
     }
 
-    public void hideAllPanel()
+    public void HideAllPanel()
     {
         foreach (var pair in uiPanelDic)
         {
@@ -57,7 +56,7 @@ public class UIManager : ManagerTemplate<UIManager>
         }
     }
 
-    public void initSceneUI(EGameScene scene)
+    public void InitSceneUI(EGameScene scene)
     {
         switch (scene)
         {
