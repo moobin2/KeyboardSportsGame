@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 6fa95e04096e2084581beb8532ece687
+timeCreated: 1490077191
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: ElvUI
+  fontNames:
+  - ElvUI
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
