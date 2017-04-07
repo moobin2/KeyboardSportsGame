@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// 매니저 추상클래스
-public abstract class ManagerTemplate<T> : MonoBehaviour where T : ManagerTemplate<T>  
+public abstract class Manager_Template<T> : MonoBehaviour where T: Manager_Template<T>
 {
-    public  static bool IsInitialized { private set; get; }       // 매니저 생성 유무 확인 변수
+    public static bool IsInitialized { private set; get; }       // 매니저 생성 유무 확인 변수
 
     private static T instance = null;
-    public  static T Instance
+    public static T Instance
     {
         get
         {
