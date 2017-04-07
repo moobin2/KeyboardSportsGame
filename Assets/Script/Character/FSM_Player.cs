@@ -4,55 +4,75 @@ using UnityEngine;
 
 public class FSM_Player : FSM_Base
 {
-    protected enum UnitState
+    IEnumerator Attack1()
     {
-        Idle, Run, Attack1, Attack2, Attack3, Dameged, Death
-    }
-    
-
-	//// Use this for initialization
-	//void Start ()
-    //{
-	//   
-	//}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    protected virtual IEnumerator Idle()
-    {
+        Debug.Log("Enter Attack1_State");
+        float motionTime = 0.0f;
+        _anim.CrossFade("Melee Right Attack 01", crossFadeTime);
         yield return null;
+
+        while (currentState == UnitState.Attack1)
+        {
+            motionTime += Time.deltaTime;
+            if (motionTime > _animList["Melee Right Attack 01"])
+            {
+                SetState(UnitState.Idle);
+            }
+            yield return null;
+        }
     }
 
-    protected virtual IEnumerator Run()
+    IEnumerator Attack2()
     {
+        Debug.Log("Enter Attack2_State");
+        float motionTime = 0.0f;
+        _anim.CrossFade("Melee Right Attack 02", crossFadeTime);
         yield return null;
+
+        while (currentState == UnitState.Attack2)
+        {
+            motionTime += Time.deltaTime;
+            if (motionTime > _animList["Melee Right Attack 02"])
+            {
+                SetState(UnitState.Idle);
+            }
+            yield return null;
+        }
     }
 
-    protected virtual IEnumerator Death()
+    IEnumerator Attack3()
     {
+        Debug.Log("Enter Attack3_State");
+        float motionTime = 0.0f;
+        _anim.CrossFade("Melee Right Attack 03", crossFadeTime);
         yield return null;
+
+        while (currentState == UnitState.Attack3)
+        {
+            motionTime += Time.deltaTime;
+            if (motionTime > _animList["Melee Right Attack 03"])
+            {
+                SetState(UnitState.Idle);
+            }
+            yield return null;
+        }
     }
 
-    protected virtual IEnumerator Attack1()
+    IEnumerator JumpAttack()
     {
+        Debug.Log("Enter JumpAttackState");
+        _anim.CrossFade("Jump Right Attack 01", crossFadeTime);
+        float motionTime = 0.0f;
         yield return null;
-    }
 
-    protected virtual IEnumerator Attack2()
-    {
-        yield return null;
-    }
-
-    protected virtual IEnumerator Attack3()
-    {
-        yield return null;
-    }
-
-    protected virtual IEnumerator Dameged()
-    {
-        yield return null;
+        while(currentState == UnitState.JumpAttack)
+        {
+            motionTime += Time.deltaTime;
+            if (motionTime > _animList["Jump Right Attack 01"])
+            {
+                SetState(UnitState.Idle);
+            }
+            yield return null;
+        }
     }
 }
