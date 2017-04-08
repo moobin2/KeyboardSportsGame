@@ -26,6 +26,8 @@ public class Controller_Player : MonoBehaviour
         _vDestPosition = gameObject.transform.localPosition;
 
         _fsmAnim.SetState(UnitState.Idle);
+
+        Manager_Effect.Instance.AddEffect("DestPosition", "FX_DestPosition", 5);
     }
 
     // Update is called once per frame
@@ -62,7 +64,7 @@ public class Controller_Player : MonoBehaviour
         string ButtonObjectName = KeyButtonName + "_button";
         _vDestPosition = _keyboard.transform.FindChild(ButtonObjectName).transform.position;
         _vDestPosition.y = 0;
-        //Manager_Effect.Instance.PlayEffect("5_FX_DestPosition", _vDestPosition);
+        Manager_Effect.Instance.PlayEffect("DestPosition", _vDestPosition);
 
         // 가야될 방향벡터 및 각도
         Vector3 nextDirection = (_vDestPosition - transform.position).normalized;
@@ -79,8 +81,9 @@ public class Controller_Player : MonoBehaviour
         _vDestRotate.y += angle;
         _vCurrentDirection = nextDirection;
 
-        iTween.MoveTo(gameObject, iTween.Hash("position", _vDestPosition, "time", _fDestTime, "oncomplete", "MoveComplete"));
+        iTween.MoveTo(gameObject, iTween.Hash("position", _vDestPosition, "time", _fDestTime, "easeType", "Linear", "oncomplete", "MoveComplete"));
         iTween.RotateTo(gameObject, _vDestRotate, inputTime - 0.1f);
+        //iTween.RotateTo(gameObject, iTween.Hash("rotation", _vDestRotate, "time", inputTime - 0.1f, "easeType", "Linear"));
     }
 
     void KeyBoardInput()

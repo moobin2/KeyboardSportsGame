@@ -18,45 +18,49 @@ public class Manager_Effect : Manager_Template<Manager_Effect>
         base.Init();
 
         _effectsDic = new Dictionary<string, List<GameObject>>();
-
-        LoadEffectResources();
     }
 
-    void LoadEffectResources()
-    {
-        GameObject[] LoadEffects = Resources.LoadAll<GameObject>(effectContainerPath);
-
-        for(int i = 0; i < LoadEffects.Length; ++i)
-        {
-            AddEffect(LoadEffects[i], 10);
-        }
-    }
-
-    void AddEffect(GameObject effect, int effectSize)
+    public void AddEffect(string effectName, string effectFileName, int effectSize)
     {
         List<GameObject> _effectList = new List<GameObject>();
 
-        effect.transform.localPosition = Vector3.zero;
-        effect.transform.localScale = Vector3.one;
+        GameObject effectRoot = new GameObject();
+        effectRoot.transform.localPosition = Vector3.zero;
+        effectRoot.transform.localScale = Vector3.one;
+        effectRoot.transform.parent = this.transform;
+        effectRoot.name = effectName + "Root";
 
-        for(int i = 0; i < effectSize; ++i)
+        GameObject effect = Resources.Load(effectContainerPath + effectFileName) as GameObject;
+
+        for (int i = 0; i < effectSize; ++i)
         {
-            _effectList.Add(effect);
+            GameObject addEffect = Instantiate(effect) as GameObject;
+            addEffect.transform.localPosition = Vector3.zero;
+            addEffect.transform.localScale = Vector3.one;
+            addEffect.transform.parent = effectRoot.transform;
+            addEffect.name = "FX_" + effectName + i;
+            _effectList.Add(addEffect);
         }
 
-        _effectsDic.Add(effect.transform.ToString(), _effectList);
+        _effectsDic.Add(effectName, _effectList);
     }
 
     public void PlayEffect(string effectName, Vector3 effectPostion)
     {
-        for(int i = 0; i < 10; ++i)
+        int effectSize = _effectsDic[effectName].Count;
+
+        for(int i = 0; i < effectSize; ++i)
         {
             ParticleSystem particle = _effectsDic[effectName][i].GetComponent<ParticleSystem>();
 
             if (particle.isPlaying == true)
+            {
+                Debug.Log(i + "번째 이펙트 패스");
                 continue;
+            }
             else
             {
+                Debug.Log(i + "번째 이펙트 출력");
                 _effectsDic[effectName][i].transform.localPosition = effectPostion;
                 particle.Play();
                 break;
