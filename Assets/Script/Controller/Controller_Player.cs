@@ -12,9 +12,6 @@ public class Controller_Player : MonoBehaviour
     private FSM_Player _fsmAnim;
     private float _fElapseTime = 0.5f;
     private float _fDestTime;
-    private Vector3 _vDestPosition;
-    private Vector3 _vDestRotate = Vector3.zero;
-    private Vector3 _vCurrentDirection = Vector3.forward;
     private GameObject _keyboard;
     private bool _bIsMoving = false;
 
@@ -23,11 +20,10 @@ public class Controller_Player : MonoBehaviour
     {
         _fsmAnim = GetComponent<FSM_Player>();
         _keyboard = GameObject.Find("Keyboard_Button");
-        _vDestPosition = gameObject.transform.localPosition;
 
         _fsmAnim.SetState(UnitState.Idle);
 
-        Manager_Effect.Instance.AddEffect("DestPosition", "FX_DestPosition", 5);
+        Manager_Effect.Instance.AddEffect("DestPosition", "FX_DestPosition", 10);
     }
 
     // Update is called once per frame
@@ -50,6 +46,7 @@ public class Controller_Player : MonoBehaviour
 
     void MoveComplete()
     {
+        Debug.ClearDeveloperConsole();
         Debug.Log("이동완료");
         _fsmAnim.SetState(UnitState.Idle);
         iTween.Stop(gameObject);
@@ -62,28 +59,25 @@ public class Controller_Player : MonoBehaviour
 
         // 가야될 위치벡터
         string ButtonObjectName = KeyButtonName + "_button";
-        _vDestPosition = _keyboard.transform.FindChild(ButtonObjectName).transform.position;
-        _vDestPosition.y = 0;
-        Manager_Effect.Instance.PlayEffect("DestPosition", _vDestPosition);
+        Vector3 destPostion = _keyboard.transform.FindChild(ButtonObjectName).transform.position;
+        destPostion.y = 0;
+        Manager_Effect.Instance.PlayEffect("DestPosition", destPostion);
 
         // 가야될 방향벡터 및 각도
-        Vector3 nextDirection = (_vDestPosition - transform.position).normalized;
-        float dot = Vector3.Dot(nextDirection, _vCurrentDirection);
+        Vector3 nextDirection = (destPostion - transform.position).normalized;
+        float dot = Vector3.Dot(nextDirection, Vector3.forward);
         float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
 
         // 외적을 이용해 -180~180의 각도로 계산
-        Vector3 temp = Vector3.Cross(_vCurrentDirection, nextDirection).normalized;
+        Vector3 temp = Vector3.Cross(Vector3.forward, nextDirection).normalized;
         angle = (temp.y > 0) ? angle : -angle;
 
         // 속도 계산
-        _fDestTime = (_vDestPosition - transform.position).magnitude / moveSpeed;
+        float moveTime = (destPostion - transform.position).magnitude / moveSpeed;
 
-        _vDestRotate.y += angle;
-        _vCurrentDirection = nextDirection;
-
-        iTween.MoveTo(gameObject, iTween.Hash("position", _vDestPosition, "time", _fDestTime, "easeType", "Linear", "oncomplete", "MoveComplete"));
-        iTween.RotateTo(gameObject, _vDestRotate, inputTime - 0.1f);
-        //iTween.RotateTo(gameObject, iTween.Hash("rotation", _vDestRotate, "time", inputTime - 0.1f, "easeType", "Linear"));
+        // iTween을 이용해 이동
+        iTween.MoveTo(gameObject, iTween.Hash("position", destPostion, "time", moveTime, "easeType", "Linear", "oncomplete", "MoveComplete"));
+        iTween.RotateTo(gameObject, new Vector3(0, angle, 0), inputTime - 0.1f);
     }
 
     void KeyBoardInput()
@@ -255,33 +249,45 @@ public class Controller_Player : MonoBehaviour
                     break;
                 case " ":
                     Debug.Log("Space Button");
-                    switch (_nAttackCount)
-                    {
-                        case 0:
-                            _fsmAnim.SetState(UnitState.Attack2);
-                            break;
-                        case 1:
-                            _fsmAnim.SetState(UnitState.Attack3);
-                            break;
-                        case 2:
-                            _fsmAnim.SetState(UnitState.Attack1);
-                            break;
-                        case 3:
-                            _fsmAnim.SetState(UnitState.JumpAttack);
-                            break;
-                    }
-                    _nAttackCount++;
-                    if (_nAttackCount > 4)
-                    {
-                        _nAttackCount = 0;
-                    }
-                    //FSMAnim.AttackMotion();
+                    SetAttack();
                     break;
-                    //default:
-                    //    Debug.Log(Input.inputString);
-                    //    break;
             }
 
+        }
+    }
+
+    void SetAttack()    // damaged 모션 추가해야함.
+    {
+        if(_fsmAnim.currentState == UnitState.Run || _fsmAnim.currentState == UnitState.Idle)
+        {
+            // idle 또는 run 상태라면 iTween을 멈춰 제자리에 멈추게 한다.
+            _bIsMoving = false;
+            iTween.Stop(gameObject);
+            switch (_nAttackCount)
+            {
+                case 0:
+                    _fsmAnim.SetState(UnitState.Attack2);
+                    break;
+                case 1:
+                    _fsmAnim.SetState(UnitState.Attack3);
+                    break;
+                case 2:
+                    _fsmAnim.SetState(UnitState.Attack1);
+                    break;
+                case 3:
+                    _fsmAnim.SetState(UnitState.JumpAttack);
+                    break;
+            }
+            _nAttackCount++;
+            if (_nAttackCount > 4)
+            {
+                _nAttackCount = 0;
+            }
+        }
+        else
+        {
+            // run, idle모션이 아니면 공격모션에 들어오게한다.
+            return;
         }
     }
 }
