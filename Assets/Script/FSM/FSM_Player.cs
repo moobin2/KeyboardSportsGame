@@ -6,7 +6,7 @@ public class FSM_Player : FSM_Base
 {
     IEnumerator Attack1()
     {
-        Debug.Log("Enter Attack1_State");
+        //Debug.Log("Enter Attack1_State");
         float motionTime = 0.0f;
         _anim.CrossFade("Melee Right Attack 01", crossFadeTime);
         yield return null;
@@ -24,7 +24,7 @@ public class FSM_Player : FSM_Base
 
     IEnumerator Attack2()
     {
-        Debug.Log("Enter Attack2_State");
+        //Debug.Log("Enter Attack2_State");
         float motionTime = 0.0f;
         _anim.CrossFade("Melee Right Attack 02", crossFadeTime);
         yield return null;
@@ -42,7 +42,7 @@ public class FSM_Player : FSM_Base
 
     IEnumerator Attack3()
     {
-        Debug.Log("Enter Attack3_State");
+        //Debug.Log("Enter Attack3_State");
         float motionTime = 0.0f;
         _anim.CrossFade("Melee Right Attack 03", crossFadeTime);
         yield return null;
@@ -60,7 +60,7 @@ public class FSM_Player : FSM_Base
 
     IEnumerator JumpAttack()
     {
-        Debug.Log("Enter JumpAttackState");
+        //Debug.Log("Enter JumpAttackState");
         _anim.CrossFade("Jump Right Attack 01", crossFadeTime);
         float motionTime = 0.0f;
         yield return null;

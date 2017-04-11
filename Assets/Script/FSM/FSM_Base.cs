@@ -22,7 +22,7 @@ public class FSM_Base : MonoBehaviour
 
     protected void Start()
     {
-        Debug.Log("Base Start");
+        //Debug.Log("Base Start");
         _anim = GetComponent<Animation>();
         _isChangeState = false;
 
@@ -31,7 +31,7 @@ public class FSM_Base : MonoBehaviour
         foreach (AnimationState AnimState in _anim)
         {
             _animList.Add(AnimState.clip.name, AnimState.clip.length);
-            Debug.Log(AnimState.clip.name.ToString() + ": length(" + AnimState.clip.length.ToString() + ")");
+            //Debug.Log(AnimState.clip.name.ToString() + ": length(" + AnimState.clip.length.ToString() + ")");
         }
 
         StartCoroutine("FsmMain");
@@ -39,7 +39,7 @@ public class FSM_Base : MonoBehaviour
 
     public void SetState(UnitState state)
     {
-        Debug.Log("Chage to " + state.ToString());
+        //Debug.Log("Chage to " + state.ToString());
         currentState = state;
         _isChangeState = true;
     }
@@ -64,7 +64,7 @@ public class FSM_Base : MonoBehaviour
 
     protected IEnumerator Idle()
     {
-        Debug.Log("Enter IdleState");
+        //Debug.Log("Enter IdleState");
         _anim.CrossFade("Idle", crossFadeTime);
         yield return null;
 
@@ -72,12 +72,12 @@ public class FSM_Base : MonoBehaviour
         {
             yield return null;
         }
-        Debug.Log("Exit IdleState");
+        //Debug.Log("Exit IdleState");
     }
 
     protected IEnumerator Run()
     {
-        Debug.Log("Enter RunState");
+        //Debug.Log("Enter RunState");
         _anim.CrossFade("Run", crossFadeTime);
         yield return null;
 
@@ -85,7 +85,7 @@ public class FSM_Base : MonoBehaviour
         {
             yield return null;
         }
-        Debug.Log("Exit RunState");
+        //Debug.Log("Exit RunState");
     }
 
     protected IEnumerator Damaged()
