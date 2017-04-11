@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using System.Text;
 
 public class Manager_Pooling : Manager_Template<Manager_Pooling>
 {
@@ -16,8 +16,16 @@ public class Manager_Pooling : Manager_Template<Manager_Pooling>
         GameObject ObjectContainer = new GameObject();
         ObjectContainer.transform.SetParent(this.transform);
         ObjectContainer.name = addObjectName + "Root";
-        //stringbuilder
+        //sb.AppendFormat("[{0}] {1}", index, name.ToString());
 
+        for(int i = 0; i < size; ++i)
+        {
+            GameObject obj = Instantiate(addObject);
+            obj.name = addObjectName + size;
+            obj.transform.localPosition = Vector3.zero;
+            obj.transform.localScale = Vector3.one;
+            obj.transform.SetParent(ObjectContainer.transform);
+        }
 
     }
 
