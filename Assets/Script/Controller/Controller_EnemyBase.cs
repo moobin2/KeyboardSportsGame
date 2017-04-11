@@ -55,9 +55,22 @@ public class Controller_EnemyBase : MonoBehaviour
         BaseSkin.material = EnermyBody[Random.Range(0, EnermyBody.Length)];
     }
 
+    //protected float AngleToPlayer()
+    //{
+    //    // 플레이어 위치에 따른 각도 계산
+    //    Vector3 playerDirection = (_player.transform.position - transform.position).normalized;
+    //    float dot = Vector3.Dot(playerDirection, Vector3.forward);
+    //    float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
+
+    //    // 외적을 이용해 -180~180의 각도로 계산
+    //    Vector3 temp = Vector3.Cross(Vector3.forward, playerDirection).normalized;
+    //    angle = (temp.y > 0) ? angle : -angle;
+
+    //    return angle;
+    //}
+
     protected void RotateToPlayer()
     {
-        // 플레이어 위치에 따른 각도 계산
         Vector3 playerDirection = (_player.transform.position - transform.position).normalized;
         float dot = Vector3.Dot(playerDirection, Vector3.forward);
         float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
@@ -66,6 +79,6 @@ public class Controller_EnemyBase : MonoBehaviour
         Vector3 temp = Vector3.Cross(Vector3.forward, playerDirection).normalized;
         angle = (temp.y > 0) ? angle : -angle;
 
-        iTween.RotateTo(gameObject, iTween.Hash("rotation", new Vector3(0, angle, 0), "easeType", "Linear", "time", 0.3f, "oncomplete", "AttackToPlayer"));
+        iTween.RotateTo(gameObject, iTween.Hash("rotation", new Vector3(0, angle, 0), "easeType", "Linear", "time", 0.2f, "oncomplete", "AttackToPlayer"));
     }
 }

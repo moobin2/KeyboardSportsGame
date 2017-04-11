@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class Controller_Arrow : MonoBehaviour
 {
-    private bool _bIsFire;
+    public bool IsFire;
     private float _arrowSpeed; 
 
 	// Use this for initialization
 	void Start ()
     {
-        _bIsFire = false;	
+        _arrowSpeed = 0.0f;
+        IsFire = false;	
 	}
 	
 	// Update is called once per frame
@@ -21,7 +22,7 @@ public class Controller_Arrow : MonoBehaviour
     public void FireArrow(Vector3 firePos, Vector3 targetPos)
     {
         // 
-        _bIsFire = true;
+        IsFire = true;
         this.gameObject.SetActive(true);
         this.transform.localPosition = firePos;
 
@@ -38,7 +39,7 @@ public class Controller_Arrow : MonoBehaviour
 
     void ArrowMoveComplete()
     {
-        _bIsFire = false;
+        IsFire = false;
         this.gameObject.SetActive(false);
 
         // 여기서 이펙트 on

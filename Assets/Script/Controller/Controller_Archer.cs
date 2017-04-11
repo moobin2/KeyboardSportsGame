@@ -23,6 +23,8 @@ public class Controller_Archer : Controller_EnemyBase
         MakeArrowPool();
 
         this.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+
+        StartCoroutine("FindPlayer");
     }
 
     void SetCrossbow()
@@ -49,6 +51,7 @@ public class Controller_Archer : Controller_EnemyBase
             crossbow.transform.localRotation = Quaternion.identity;
             crossbow.transform.localScale = Vector3.one;
             crossbow.SetActive(false);
+            crossbow.AddComponent<Controller_Arrow>();
         }
 
     }
@@ -63,10 +66,13 @@ public class Controller_Archer : Controller_EnemyBase
     {
         yield return new WaitForSeconds(_attackTime);
 
-        RotateToPlayer();
+        base.RotateToPlayer();
+
+        //float angleToPlayer = base.AngleToPlayer();
+        //iTween.RotateTo(gameObject, iTween.Hash("rotation", new Vector3(0, angleToPlayer, 0), "easeType", "Linear", "time", 0.3f, "oncomplete", "AttackToPlayer"));
     }
 
-    //void RotateToPlayer()
+    //void RotateToPlayer(float angle)
     //{
     //    // 플레이어 위치에 따른 각도 계산
     //    Vector3 playerDirection = (_player.transform.position - transform.position).normalized;
@@ -82,9 +88,10 @@ public class Controller_Archer : Controller_EnemyBase
 
     void AttackToPlayer()
     {
+        Debug.Log("활쟁이 공격시작");
         for(int i = 0; i < _arrowSize; ++i)
         {
-            if(_arrowPool[i].activeInHierarchy == true)
+            if(_arrowPool[i].GetComponent<Controller_Arrow>().IsFire == true)
             {
                 continue;
             }
