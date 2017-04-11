@@ -4,8 +4,9 @@ using UnityEngine;
 
 public enum UnitState
 {
-    Idle, Run, Dameged, Die,                    // 공통모션
-    Attack1, Attack2, Attack3, JumpAttack       // 플레이어
+    Idle, Run, Dameged, Die,                                // 공통모션
+    Attack1, Attack2, Attack3, JumpAttack, SpinAttack,      // 플레이어
+    FireArrow
 }
 
 [RequireComponent(typeof(Animation))]
