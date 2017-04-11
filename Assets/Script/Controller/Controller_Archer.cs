@@ -8,7 +8,7 @@ public class Controller_Archer : Controller_EnemyBase
     Transform _arrowFirePos;
     private int             _arrowSize;
     private FSM_Archer      _fsmAnim;
-    private GameObject[]    _arrowPool;
+    private Object_Pool     _arrowPool;
 
 	// Use this for initialization
 	void Start ()
@@ -19,8 +19,10 @@ public class Controller_Archer : Controller_EnemyBase
         _fsmAnim = GetComponent<FSM_Archer>();
         _fsmAnim.SetState(UnitState.Idle);
 
+        _arrowPool = transform.Find("ArrowPool").gameObject.GetComponent<Object_Pool>();
+
         SetCrossbow();
-        MakeArrowPool();
+        //MakeArrowPool();
 
         this.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
@@ -89,17 +91,21 @@ public class Controller_Archer : Controller_EnemyBase
     void AttackToPlayer()
     {
         Debug.Log("활쟁이 공격시작");
-        for(int i = 0; i < _arrowSize; ++i)
+
+        // 화살 오브젝트풀 검사
+        for(int i = 0; i < _arrowPool.objectSize; ++i)
         {
-            if(_arrowPool[i].GetComponent<Controller_Arrow>().IsFire == true)
+            // 오브젝트풀의 화살이 active가 false라면
+            if(_arrowPool.ObjectPool[i].activeInHierarchy == false)
             {
-                continue;
+                // 그 화살을 발사시킨다
+                        
             }
             else
             {
-                _arrowPool[i].GetComponent<Controller_Arrow>().FireArrow(_arrowFirePos.position, _player.transform.position);
-                break;
+                continue;
             }
         }
+
     }
 }
