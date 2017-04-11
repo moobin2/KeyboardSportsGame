@@ -34,7 +34,7 @@ public class Controller_Archer : Controller_EnemyBase
         GameObject crossbow = Instantiate(arrCrossbow[Random.Range(0, arrCrossbow.Length)]);
         crossbow.transform.parent = leftHandPos.transform;
         crossbow.transform.localPosition = Vector3.zero;
-        crossbow.transform.localRotation = Quaternion.identity;
+        crossbow.transform.localRotation = Quaternion.Euler(-90, 0, 0);
         crossbow.transform.localScale = Vector3.one;
     }
 

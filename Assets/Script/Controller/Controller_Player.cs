@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -61,7 +61,7 @@ public class Controller_Player : MonoBehaviour
         string ButtonObjectName = KeyButtonName + "_button";
         Vector3 destPostion = _keyboard.transform.FindChild(ButtonObjectName).transform.position;
         destPostion.y = 0;
-        Manager_Effect.Instance.PlayEffect("DestPosition", destPostion);
+        //Manager_Effect.Instance.PlayEffect("DestPosition", destPostion);
 
         // 가야될 방향벡터 및 각도
         Vector3 nextDirection = (destPostion - transform.position).normalized;
