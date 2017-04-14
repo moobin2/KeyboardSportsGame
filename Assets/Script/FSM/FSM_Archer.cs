@@ -4,17 +4,29 @@ using UnityEngine;
 
 public class FSM_Archer : FSM_Base
 {
-    IEnumerator FireArrow()
+    IEnumerator ArrowAim()
     {
-        Debug.Log("Enter Attack1_State");
-        float motionTime = 0.0f;
-        _anim.CrossFade("Melee Right Attack 01", crossFadeTime);
+        Debug.Log("Enter Crossbow Aim");
+        _anim.CrossFade("Crossbow Aim", crossFadeTime);
         yield return null;
 
-        while (currentState == UnitState.Attack1)
+        while (currentState == UnitState.ArrowAim)
+        {
+            yield return null;
+        }
+    }
+
+    IEnumerator ArrowShoot()
+    {
+        Debug.Log("Enter Crossbow Shoot Attack");
+        float motionTime = 0.0f;
+        _anim.CrossFade("Crossbow Shoot Attack", crossFadeTime);
+        yield return null;
+
+        while (currentState == UnitState.ArrowShoot)
         {
             motionTime += Time.deltaTime;
-            if (motionTime > _animList["Melee Right Attack 01"])
+            if (motionTime > _animList["Crossbow Shoot Attack"])
             {
                 SetState(UnitState.Idle);
             }
