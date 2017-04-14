@@ -5,24 +5,23 @@ using UnityEngine;
 [RequireComponent(typeof(FSM_Archer))]
 public class Controller_Archer : Controller_EnemyBase
 {
-    Transform _arrowFirePos;
-    private int             _arrowSize;
+    public GameObject objectContainer;
+
     private FSM_Archer      _fsmAnim;
-    private Object_Pool     _arrowPool;
+    private Pool_Controller _arrowPool;
 
 	// Use this for initialization
 	void Start ()
     {
         base.Start();
-        _attackTime = 3.0f;
-        _arrowSize = 10;
+        _waitingTime = 3.0f;
         _fsmAnim = GetComponent<FSM_Archer>();
         _fsmAnim.SetState(UnitState.Idle);
+        _type = EnermyType.Archer;
 
-        _arrowPool = transform.Find("ArrowPool").gameObject.GetComponent<Object_Pool>();
+        _arrowPool = objectContainer.GetComponent<Pool_Controller>();
 
         SetCrossbow();
-        //MakeArrowPool();
 
         this.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
@@ -40,72 +39,22 @@ public class Controller_Archer : Controller_EnemyBase
         crossbow.transform.localScale = Vector3.one;
     }
 
-    void MakeArrowPool()
-    {
-        GameObject[] arrArrow = Resources.LoadAll<GameObject>("Weapon/Arrow");
-
-        int arrowNunber = Random.Range(0, arrArrow.Length);
-
-        for (int i = 0; i < _arrowSize; ++i)
-        {
-            GameObject crossbow = Instantiate(arrArrow[arrowNunber]);
-            crossbow.transform.localPosition = Vector3.zero;
-            crossbow.transform.localRotation = Quaternion.identity;
-            crossbow.transform.localScale = Vector3.one;
-            crossbow.SetActive(false);
-            crossbow.AddComponent<Controller_Arrow>();
-        }
-
-    }
-	
-	// Update is called once per frame
-	void Update ()
-    {
-		
-	}
-
     IEnumerator FindPlayer()
     {
-        yield return new WaitForSeconds(_attackTime);
+        _fsmAnim.SetState(UnitState.Idle);
+        yield return new WaitForSeconds(_waitingTime);
 
+        _fsmAnim.SetState(UnitState.ArrowAim);
         base.RotateToPlayer();
-
-        //float angleToPlayer = base.AngleToPlayer();
-        //iTween.RotateTo(gameObject, iTween.Hash("rotation", new Vector3(0, angleToPlayer, 0), "easeType", "Linear", "time", 0.3f, "oncomplete", "AttackToPlayer"));
+        _waitingTime = Random.Range(2.0f, 5.0f);
     }
 
-    //void RotateToPlayer(float angle)
-    //{
-    //    // 플레이어 위치에 따른 각도 계산
-    //    Vector3 playerDirection = (_player.transform.position - transform.position).normalized;
-    //    float dot = Vector3.Dot(playerDirection, Vector3.forward);
-    //    float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
-
-    //    // 외적을 이용해 -180~180의 각도로 계산
-    //    Vector3 temp = Vector3.Cross(Vector3.forward, playerDirection).normalized;
-    //    angle = (temp.y > 0) ? angle : -angle;
-
-    //    iTween.RotateTo(gameObject, iTween.Hash("rotation", new Vector3(0, angle, 0), "easeType", "Linear", "time", 0.3f, "oncomplete", "FireArrow"));
-    //}
-
-    void AttackToPlayer()
+    IEnumerator AttackToPlayer()
     {
-        Debug.Log("활쟁이 공격시작");
+        _fsmAnim.SetState(UnitState.ArrowShoot);
+        yield return new WaitForSeconds(0.15f);
+        _arrowPool.GetObjcet("Arrow").GetComponent<Pool_Arrow>().FireArrow(leftHandPos.transform.position, _player.transform.position);
 
-        // 화살 오브젝트풀 검사
-        for(int i = 0; i < _arrowPool.objectSize; ++i)
-        {
-            // 오브젝트풀의 화살이 active가 false라면
-            if(_arrowPool.ObjectPool[i].activeInHierarchy == false)
-            {
-                // 그 화살을 발사시킨다
-                        
-            }
-            else
-            {
-                continue;
-            }
-        }
-
+        StartCoroutine("FindPlayer");
     }
 }

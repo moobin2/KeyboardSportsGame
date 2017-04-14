@@ -1,4 +1,4 @@
-﻿ using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +12,6 @@ public class Controller_Player : MonoBehaviour
     private FSM_Player _fsmAnim;
     private float _fElapseTime = 0.5f;
     private float _fDestTime;
-    private GameObject _keyboard;
     private bool _bIsMoving = false;
 	private Dictionary<char, Vector3> _dicKeyPosition;
 
@@ -286,7 +285,7 @@ public class Controller_Player : MonoBehaviour
                     break;
             }
             _nAttackCount++;
-            if (_nAttackCount > 4)
+            if (_nAttackCount >= 4)
             {
                 _nAttackCount = 0;
             }
