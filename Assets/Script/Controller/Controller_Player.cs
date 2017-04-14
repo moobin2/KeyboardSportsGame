@@ -27,7 +27,7 @@ public class Controller_Player : MonoBehaviour
 			_dicKeyPosition.Add(keyTrans[i].name[0].ToString().ToLower()[0], keyTrans[i].position);
 		}
         _fsmAnim.SetState(UnitState.Idle);
-
+		Manager_Item.Create();
         //Manager_Effect.Instance.AddEffect("DestPosition", "FX_DestPosition", 10);
     }
 
