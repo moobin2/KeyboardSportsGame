@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(FSM_Player))]
 public class Controller_Player : MonoBehaviour
 {
+    public int maxHP;
+    public int damage;
     public float inputTime = 0.5f;
     public float moveSpeed = 2.0f;
 
@@ -18,6 +20,9 @@ public class Controller_Player : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        // 해금된 
+        // 끼고있고
+        
 		_dicKeyPosition = new Dictionary<char, Vector3>();
 		_fsmAnim = GetComponent<FSM_Player>();
 		Transform[] keyTrans = GameObject.Find("Keyboard_Button").GetComponentsInChildren<Transform>();
