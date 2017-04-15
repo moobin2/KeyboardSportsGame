@@ -104,7 +104,7 @@ public class FSM_Base : MonoBehaviour
     protected IEnumerator TH_Run()
     {
         //Debug.Log("Enter RunState");
-        _anim.CrossFade("TH Sword Run With Root Motion", crossFadeTime);
+        _anim.CrossFade("TH Sword Run Without Root Motion", crossFadeTime);
         yield return null;
 
         while (currentState == UnitState.TH_Run)

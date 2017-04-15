@@ -18,17 +18,15 @@ public class Controller_Warrior : Controller_EnemyBase
     {
         base.Start();
 
-        _swordType = (SwordType)Random.Range(0, 2);
+        _swordType = (SwordType)Random.Range(1, 2);
         _fsmAnim = GetComponent<FSM_Warrior>();
         _fsmAnim.SetState(UnitState.Idle);
         _type = EnermyType.Warrior;
-
-        base.Start();
         _waitingTime = 1.0f;
 
         SetSword();
 
-        //StartCoroutine("FindPlayer");
+        StartCoroutine("FindPlayer");
     }
 
     void SetSword()
@@ -39,6 +37,11 @@ public class Controller_Warrior : Controller_EnemyBase
             arrSword = Resources.LoadAll<GameObject>("Weapon/Sword/One Handed");
         else
             arrSword = Resources.LoadAll<GameObject>("Weapon/Sword/Two Handed");
+
+        for(int i = 0; i < arrSword.Length; ++i)
+        {
+            Debug.Log(arrSword[i].ToString());
+        }
 
         GameObject sword = Instantiate(arrSword[Random.Range(0, arrSword.Length)]);
         sword.transform.parent = rightHandPos.transform;
