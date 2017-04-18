@@ -30,5 +30,10 @@ public class UIPanel_Inventory : UIPanel_Template<UIPanel_Inventory> {
 	{
 		_buttons[currentTab].enabled = true;
 		_buttons[clickTab].enabled = false;
+
+		for (int i = 0; i < _buttons.Length; i++)
+		{
+			_lists[i].SetActive(i == clickTab);
+		}
 	}
 }
