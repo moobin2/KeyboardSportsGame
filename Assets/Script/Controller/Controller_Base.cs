@@ -13,11 +13,16 @@ public class Controller_Base : MonoBehaviour
     protected FSM_Base _fsmAnim;
 
 	// Use this for initialization
-	protected void Start ()
+	protected void Awake()
     {
-        _fsmAnim = GetComponent<FSM_Base>();	
+        _fsmAnim = GetComponent<FSM_Base>();
 	}
-    
+
+    protected void Init()
+    {
+        _fsmAnim.Init();
+    }
+            
 
     protected void SetMotionState(MOTIONSTATE motion)
     {

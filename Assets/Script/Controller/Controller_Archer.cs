@@ -11,9 +11,9 @@ public class Controller_Archer : Controller_EnemyBase
     private Pool_Controller _arrowPool;
 
 	// Use this for initialization
-	void Start ()
+	void Awake()
     {
-        base.Start();
+        base.Awake();
         _waitingTime = 3.0f;
         _fsmAnim = GetComponent<FSM_Archer>();
         //_fsmAnim.SetState(UnitState.Idle);

@@ -37,11 +37,15 @@ public class FSM_Base : MonoBehaviour
 
     // Use this for initialization
 
-    void Start()
+    void Awake()
     {
         _anim = GetComponent<Animator>();
         _isChangeState = false;
 
+    }
+
+    public void Init()
+    {
         StartCoroutine("FsmMain");
     }
 
@@ -62,6 +66,7 @@ public class FSM_Base : MonoBehaviour
                 _isChangeState = false;
                 _anim.SetInteger("BaseState", (int)currentBaseState);
                 _anim.SetInteger("MotionState", (int)currentMotionState);
+                StartCoroutine("WaitForAnimation", currentMotionState);
                 yield return null;
             }
             else
@@ -70,6 +75,34 @@ public class FSM_Base : MonoBehaviour
             }
         }
     }
+
+    IEnumerator WaitForAnimation(MOTIONSTATE motion)
+    {
+        float animLength = _anim.GetCurrentAnimatorStateInfo(0).length;
+        Debug.Log(animLength);
+
+        if (motion == MOTIONSTATE.Idle || motion == MOTIONSTATE.Run)
+        {
+            yield return null;
+        }
+        else
+        {
+            yield return new WaitForSeconds(1.0f);
+            Debug.Log("모션끝");
+            SetState(currentBaseState, MOTIONSTATE.Idle);
+        }
+    }
+
+    //IEnumerator WaitForAnimation()
+    //{
+    //    //while (true == animator.GetCurrentAnimatorStateInfo(0).IsName(name)) {
+    //    while (false == _anim.IsInTransition(0))
+    //    {
+    //        yield return null;
+    //    }
+    //    Debug.Log("모션끝");
+    //    currentMotionState = (int)MOTIONSTATE.Idle;
+    //}
 
     //protected IEnumerator Idle()
     //{
