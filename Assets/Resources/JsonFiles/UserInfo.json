@@ -1,0 +1,25 @@
+{
+	"_liftHairList": 
+	[
+		"0000"
+	],
+	"_liftSkinList": 
+	[
+		"1000"
+	],
+	"_liftWingList": 
+	[
+		"2000"
+	],
+	"_liftWeaponList": 
+	[
+		"3000"
+	],
+	"_currentItem":
+	[
+		"0000",
+		"1000",
+		"2000",
+		"3000"
+	]
+}

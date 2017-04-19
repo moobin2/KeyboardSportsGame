@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Manager_Game : MonoBehaviour
 {
+
     void Start()
     {
         this.gameObject.name = "[Manager]GamaManager";      // 해당 오브젝트이름 바꾸기
