@@ -33,10 +33,10 @@ public class Item_Inventory : MonoBehaviour
 			return _data;
 		}
 	}
-
 	private void Awake()
 	{
-		TextAsset jsonText = (TextAsset)Resources.Load("JsonFiles/UserInfo");
+		TextAsset jsonText = (TextAsset)Resources.Load("JsonFiles/Inventory");
 		_data = JsonUtility.FromJson<InventoryData>(jsonText.text);
+
 	}
 }
