@@ -22,11 +22,22 @@ public class Json_ItemData
 public class Manager_Item : Manager_Template<Manager_Item>
 {
 	private GameObject[] _hairList;
+	private Texture[] _hairInvenTexture;
 	private GameObject[] _wingList;
+	private Texture[] _wingInvenTexture;
 	private GameObject[] _weaponList;
+	private Texture[] _weaponInvenTexture;
 	private Material[] _skinList;
+	private Texture[] _skinInvenTexture;
 
 	private Json_ItemData _itemData;
+	public Json_ItemData ItemData
+	{
+		get
+		{
+			return _itemData;
+		}
+	}
 
 	protected override void Init()
 	{
@@ -73,12 +84,12 @@ public class Manager_Item : Manager_Template<Manager_Item>
 		
 	//}
 
-	public void ChangeSkin(GameObject attachBody, string skinCode)
-	{
-		int code = Convert.ToInt32(skinCode.Substring(1));
-		MeshRenderer renderer = attachBody.GetComponentInChildren<MeshRenderer>();
-		renderer.material = _skinList[code];
-	}
+	//public void ChangeSkin(GameObject attachBody, string skinCode)
+	//{
+	//	int code = Convert.ToInt32(skinCode.Substring(1));
+	//	MeshRenderer renderer = attachBody.GetComponentInChildren<MeshRenderer>();
+	//	renderer.material = _skinList[code];
+	//}
 
 	public GameObject CreateItem(string itemCode)
 	{
@@ -104,5 +115,51 @@ public class Manager_Item : Manager_Template<Manager_Item>
 		}
 		createItem = Instantiate(createItem);
 		return createItem;
+	}
+
+	public Texture GetTexture(string itemCode)
+	{
+		int type = int.Parse(itemCode[0].ToString());
+		switch (type)
+		{
+			case 0:
+				//Hair
+				return _hairInvenTexture[Convert.ToInt32(itemCode.Substring(1))];
+			case 1:
+				//Skin
+				return _skinInvenTexture[Convert.ToInt32(itemCode.Substring(1))];
+			case 2:
+				//Wing
+				return _wingInvenTexture[Convert.ToInt32(itemCode.Substring(1))];
+			case 3:
+				//Weapon
+				return _weaponInvenTexture[Convert.ToInt32(itemCode.Substring(1))];
+			default:
+				break;
+		}
+		return null;
+	}
+
+	public ItemData GetItemData(string itemCode)
+	{
+		int type = int.Parse(itemCode[0].ToString());
+		switch (type)
+		{
+			case 0:
+				//Hair
+				return _itemData.Hair[Convert.ToInt32(itemCode.Substring(1))];
+			case 1:
+				//Skin
+				return _itemData.Skin[Convert.ToInt32(itemCode.Substring(1))];
+			case 2:
+				//Wing
+				return _itemData.Hair[Convert.ToInt32(itemCode.Substring(1))];
+			case 3:
+				//Weapon
+				return _itemData.Hair[Convert.ToInt32(itemCode.Substring(1))];
+			default:
+				break;
+		}
+		return null;
 	}
 }
