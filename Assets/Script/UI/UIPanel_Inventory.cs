@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UIPanel_Inventory : UIPanel_Template<UIPanel_Inventory> {
 
-	private UIButton[] _buttons;
+	private UIButton[] _tabs;
 	private int currentTab = 0;
 	[SerializeField]
 	private GameObject[] _lists;
@@ -13,13 +13,13 @@ public class UIPanel_Inventory : UIPanel_Template<UIPanel_Inventory> {
 	{
 		base.init();
 
-		_buttons = this.GetComponentsInChildren<UIButton>();
+		_tabs = this.GetComponentsInChildren<UIButton>();
 
-		for (int i = 0; i < _buttons.Length; i++)
+		for (int i = 0; i < _tabs.Length; i++)
 		{
 			EventDelegate btnEvent = new EventDelegate(this, "TabClick");
 			btnEvent.parameters[0] = new EventDelegate.Parameter(i);
-			_buttons[i].onClick.Add(btnEvent);
+			_tabs[i].onClick.Add(btnEvent);
 		}
 
 		_lists[1].SetActive(false);
@@ -28,10 +28,10 @@ public class UIPanel_Inventory : UIPanel_Template<UIPanel_Inventory> {
 
 	public void TabClick(int clickTab)
 	{
-		_buttons[currentTab].enabled = true;
-		_buttons[clickTab].enabled = false;
+		_tabs[currentTab].enabled = true;
+		_tabs[clickTab].enabled = false;
 
-		for (int i = 0; i < _buttons.Length; i++)
+		for (int i = 0; i < _tabs.Length; i++)
 		{
 			_lists[i].SetActive(i == clickTab);
 		}
