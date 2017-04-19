@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public enum EGameScene
 {
-    NONE, TITLE, MAIN,
+    NONE, TITLE, MAIN, TEST_M,
 }
 
 public class Manager_GameScene : Manager_Template<Manager_GameScene>
@@ -53,6 +53,11 @@ public class Manager_GameScene : Manager_Template<Manager_GameScene>
             case EGameScene.MAIN:
                 {
                     this.loadScene("MainScene", onComplete);
+                }
+                break;
+            case EGameScene.TEST_M:
+                {
+                    this.loadScene("MainScene_m", onComplete);
                 }
                 break;
         }
