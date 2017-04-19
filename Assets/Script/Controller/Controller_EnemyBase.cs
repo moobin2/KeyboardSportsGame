@@ -26,7 +26,7 @@ public class Controller_EnemyBase : MonoBehaviour
     protected float         _waitingTime;       // 어택타임
     protected bool          _bIsAttack = false; // 공격여부
 
-    protected void Start ()
+    protected void Awake()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
         SetEnemySkin();

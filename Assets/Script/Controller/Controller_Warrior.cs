@@ -14,9 +14,9 @@ public class Controller_Warrior : Controller_EnemyBase
     private SwordType _swordType;
 
 	// Use this for initialization
-	void Start ()
+	void Awake()
     {
-        base.Start();
+        base.Awake();
 
         _swordType = (SwordType)Random.Range(1, 2);
         _fsmAnim = GetComponent<FSM_Warrior>();
