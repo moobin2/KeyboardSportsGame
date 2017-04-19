@@ -2,25 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Text;
+
+[Serializable]
+public class ItemData
+{
+	public string _code;
+	public string _name;
+	public string _price;
+}
 
 [Serializable]
 public class Json_ItemData
 {
-	public List<ItemBase> Hair;
-	public List<ItemBase> Skin;
+	public List<ItemData> Hair;
+	public List<ItemData> Skin;
 }
 
 public class Manager_Item : Manager_Template<Manager_Item>
 {
 	private GameObject[] _hairList;
 	private GameObject[] _wingList;
+	private GameObject[] _weaponList;
 	private Material[] _skinList;
 
 	private Json_ItemData _itemData;
 
 	protected override void Init()
 	{
-		base.Init();
+		base.Init();	
 
 		_hairList = Resources.LoadAll<GameObject>("Item/Hair");
 		_skinList = Resources.LoadAll<Material>("Item/Skin");
@@ -28,39 +38,71 @@ public class Manager_Item : Manager_Template<Manager_Item>
 		TextAsset jsonText = (TextAsset)Resources.Load("JsonFiles/ItemList");
 
 		_itemData = JsonUtility.FromJson<Json_ItemData>(jsonText.text);
-		Debug.Log(_itemData.Hair.Count);
-		Debug.Log(_itemData.Hair[1]._name);
 	}
 
-	public void CreateHair(GameObject character, int hairCode)
+	//public void CreateItem(Transform attachTrans, string code)
+	//{
+	//	int type = Convert.ToInt32(code[0]);
+	//	if (type == 1) return;
+
+	//	GameObject createItem = null;
+	//	switch (type)
+	//	{
+	//		case 0:
+	//			//Hair
+	//			createItem = _hairList[Convert.ToInt32(code.Substring(1))];
+	//			break;
+	//		case 2:
+	//			//Wing
+	//			createItem = _wingList[Convert.ToInt32(code.Substring(1))];
+	//			break;
+	//		case 3:
+	//			//Weapon
+	//			createItem = _weaponList[Convert.ToInt32(code.Substring(1))];
+	//			break;
+	//	}
+
+	//	GameObject gObj = Instantiate(createItem);
+	//	gObj.transform.SetParent(attachTrans);
+	//	gObj.transform.localPosition = Vector3.zero;
+	//	gObj.transform.localRotation = Quaternion.Euler(-90, 0, 0);
+	//}
+
+	//public void CreateSkinModel(Transform createTrans, string skinCode)
+	//{
+		
+	//}
+
+	public void ChangeSkin(GameObject attachBody, string skinCode)
 	{
-		Transform attachTrans = character.transform.FindChild("RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigNeck/RigHead/Dummy Prop Head");
+		int code = Convert.ToInt32(skinCode.Substring(1));
+		MeshRenderer renderer = attachBody.GetComponentInChildren<MeshRenderer>();
+		renderer.material = _skinList[code];
+	}
 
-		Transform[] searchTrans = attachTrans.GetComponentsInChildren<Transform>();
-
-		for (int i = 1; i < searchTrans.Length; i++)
+	public GameObject CreateItem(string itemCode)
+	{
+		GameObject createItem;
+		int type = int.Parse(itemCode[0].ToString());
+		switch (type)
 		{
-			string name = searchTrans[i].name;
-			if (-1 != name.IndexOf("Hair"))
-			{
-				Destroy(searchTrans[i].gameObject);
-			}
+			case 0:
+				//Hair
+				createItem = _hairList[Convert.ToInt32(itemCode.Substring(1))];
+				break;
+			case 2:
+				//Wing
+				createItem = _wingList[Convert.ToInt32(itemCode.Substring(1))];
+				break;
+			case 3:
+				//Weapon
+				createItem = _weaponList[Convert.ToInt32(itemCode.Substring(1))];
+				break;
+			default:
+				createItem = null;
+				break;
 		}
-
-		GameObject gObj = Instantiate(_hairList[hairCode]);
-		gObj.transform.SetParent(attachTrans);
-		gObj.transform.localPosition = Vector3.zero;
-		gObj.transform.localRotation = Quaternion.Euler(-90, 0, 0);
-	}
-
-	public void ChangeSkin(GameObject character, int skinCode)
-	{
-		SkinnedMeshRenderer mesh = character.GetComponentInChildren<SkinnedMeshRenderer>();
-		mesh.material = _skinList[0];
-	}
-
-	public void CreateWing(GameObject character, int wingCode)
-	{
-
+		createItem = Instantiate(createItem);
+		return createItem;
 	}
 }
