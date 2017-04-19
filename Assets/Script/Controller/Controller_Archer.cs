@@ -16,7 +16,7 @@ public class Controller_Archer : Controller_EnemyBase
         base.Start();
         _waitingTime = 3.0f;
         _fsmAnim = GetComponent<FSM_Archer>();
-        _fsmAnim.SetState(UnitState.Idle);
+        //_fsmAnim.SetState(UnitState.Idle);
         _type = EnermyType.Archer;
 
         _arrowPool = objectContainer.GetComponent<Pool_Controller>();
@@ -41,17 +41,17 @@ public class Controller_Archer : Controller_EnemyBase
 
     IEnumerator FindPlayer()
     {
-        _fsmAnim.SetState(UnitState.Idle);
+       // _fsmAnim.SetState(UnitState.Idle);
         yield return new WaitForSeconds(_waitingTime);
 
-        _fsmAnim.SetState(UnitState.ArrowAim);
+      //  _fsmAnim.SetState(UnitState.ArrowAim);
         base.RotateToPlayer();
         _waitingTime = Random.Range(2.0f, 5.0f);
     }
 
     IEnumerator AttackToPlayer()
     {
-        _fsmAnim.SetState(UnitState.ArrowShoot);
+      //  _fsmAnim.SetState(UnitState.ArrowShoot);
         yield return new WaitForSeconds(0.15f);
         _arrowPool.GetObjcet("Arrow").GetComponent<Pool_Arrow>().FireArrow(leftHandPos.transform.position, _player.transform.position);
 

@@ -20,7 +20,7 @@ public class Controller_Warrior : Controller_EnemyBase
 
         _swordType = (SwordType)Random.Range(1, 2);
         _fsmAnim = GetComponent<FSM_Warrior>();
-        _fsmAnim.SetState(UnitState.Idle);
+        //_fsmAnim.SetState(UnitState.Idle);
         _type = EnermyType.Warrior;
         _waitingTime = 1.0f;
 
@@ -54,10 +54,10 @@ public class Controller_Warrior : Controller_EnemyBase
     {
         yield return new WaitForSeconds(_waitingTime);
 
-        if (_swordType == SwordType.OneHand)
-            _fsmAnim.SetState(UnitState.Run);
-        else
-            _fsmAnim.SetState(UnitState.TH_Run);
+       // if (_swordType == SwordType.OneHand)
+            //_fsmAnim.SetState(UnitState.Run);
+       // else
+            //_fsmAnim.SetState(UnitState.TH_Run);
 
         base.RotateToPlayer();
     }
@@ -70,12 +70,12 @@ public class Controller_Warrior : Controller_EnemyBase
         switch(motionNumber)
         {
             case 0:
-                if(_swordType == SwordType.OneHand) _fsmAnim.SetState(UnitState.Attack2);
-                else _fsmAnim.SetState(UnitState.TH_Attack1);
+                //if(_swordType == SwordType.OneHand) _fsmAnim.SetState(UnitState.Attack2);
+                //else _fsmAnim.SetState(UnitState.TH_Attack1);
                 break;
             case 1:
-                if (_swordType == SwordType.OneHand) _fsmAnim.SetState(UnitState.Attack3);
-                else _fsmAnim.SetState(UnitState.TH_Attack2);
+                //if (_swordType == SwordType.OneHand) _fsmAnim.SetState(UnitState.Attack3);
+                //else _fsmAnim.SetState(UnitState.TH_Attack2);
                 break;
         }
 

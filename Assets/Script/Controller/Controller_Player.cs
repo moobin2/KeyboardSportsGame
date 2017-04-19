@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(FSM_Player))]
-public class Controller_Player : MonoBehaviour
+public class Controller_Player : Controller_Base
 {
-    public int maxHP;
-    public int damage;
     public float inputTime = 0.5f;
     public float moveSpeed = 2.0f;
 
     private int _nAttackCount = 0;
-    private FSM_Player _fsmAnim;
     private float _fElapseTime = 0.5f;
-    private float _fDestTime;
     private bool _bIsMoving = false;
 	private Dictionary<char, Vector3> _dicKeyPosition;
 
@@ -22,18 +17,30 @@ public class Controller_Player : MonoBehaviour
     {
         // 해금된 
         // 끼고있고
+        base.Start();
         
 		_dicKeyPosition = new Dictionary<char, Vector3>();
-		_fsmAnim = GetComponent<FSM_Player>();
 		Transform[] keyTrans = GameObject.Find("Keyboard_Button").GetComponentsInChildren<Transform>();
 
 		for (int i=1; i < keyTrans.Length; i++)
 		{
 			_dicKeyPosition.Add(keyTrans[i].name[0].ToString().ToLower()[0], keyTrans[i].position);
 		}
-        _fsmAnim.SetState(UnitState.Idle);
+
+        currentBaseMotion = BASESTATE.Flying;
+        base.SetMotionState(MOTIONSTATE.Idle);
 		Manager_Item.Create();
+
         //Manager_Effect.Instance.AddEffect("DestPosition", "FX_DestPosition", 10);
+
+        DontDestroyOnLoad(this);
+        gameObject.name = "[Player]Charater";
+    }
+
+    public void Init()
+    {
+
+
     }
 
     // Update is called once per frame
@@ -48,9 +55,14 @@ public class Controller_Player : MonoBehaviour
         if (_bIsMoving == false) return;
 
         //만약 움직이는 모션이 아니라면 움직이는 모션으로 바꿔준다.
-        if (_fsmAnim.currentState != UnitState.Run)
+        //if (_fsmAnim.currentState != UnitState.Run)
+        //{
+        //    _fsmAnim.SetState(UnitState.Run);
+        //}
+
+        if(_fsmAnim.CurrentMotionState != MOTIONSTATE.Run)
         {
-            _fsmAnim.SetState(UnitState.Run);
+            base.SetMotionState(MOTIONSTATE.Run);
         }
     }
 
@@ -58,7 +70,8 @@ public class Controller_Player : MonoBehaviour
     {
         Debug.ClearDeveloperConsole();
         Debug.Log("이동완료");
-        _fsmAnim.SetState(UnitState.Idle);
+        //_fsmAnim.SetState(UnitState.Idle);
+        base.SetMotionState(MOTIONSTATE.Idle);
         iTween.Stop(gameObject);
         _bIsMoving = false;
     }
@@ -269,7 +282,8 @@ public class Controller_Player : MonoBehaviour
 
     void SetAttack()    // damaged 모션 추가해야함.
     {
-        if(_fsmAnim.currentState == UnitState.Run || _fsmAnim.currentState == UnitState.Idle)
+        //if(_fsmAnim.currentState == UnitState.Run || _fsmAnim.currentState == UnitState.Idle)
+        if(_fsmAnim.CurrentMotionState == MOTIONSTATE.Run || _fsmAnim.CurrentMotionState == MOTIONSTATE.Idle)
         {
             // idle 또는 run 상태라면 iTween을 멈춰 제자리에 멈추게 한다.
             _bIsMoving = false;
@@ -277,16 +291,20 @@ public class Controller_Player : MonoBehaviour
             switch (_nAttackCount)
             {
                 case 0:
-                    _fsmAnim.SetState(UnitState.Attack2);
+                    //_fsmAnim.SetState(UnitState.Attack2);
+                    base.SetMotionState(MOTIONSTATE.Attack1);
                     break;
                 case 1:
-                    _fsmAnim.SetState(UnitState.Attack3);
+                    //_fsmAnim.SetState(UnitState.Attack3);
+                    base.SetMotionState(MOTIONSTATE.Attack2);
                     break;
                 case 2:
-                    _fsmAnim.SetState(UnitState.Attack1);
+                    //_fsmAnim.SetState(UnitState.Attack1);
+                    base.SetMotionState(MOTIONSTATE.Attack3);
                     break;
                 case 3:
-                    _fsmAnim.SetState(UnitState.JumpAttack);
+                    //_fsmAnim.SetState(UnitState.JumpAttack);
+                    base.SetMotionState(MOTIONSTATE.JumpAttack);
                     break;
             }
             _nAttackCount++;
