@@ -66,7 +66,7 @@ public class FSM_Base : MonoBehaviour
                 _isChangeState = false;
                 _anim.SetInteger("BaseState", (int)currentBaseState);
                 _anim.SetInteger("MotionState", (int)currentMotionState);
-                StartCoroutine("WaitForAnimation", currentMotionState);
+                StartCoroutine("WaitForAnimation", _anim.GetCurrentAnimatorStateInfo(0).length);
                 yield return null;
             }
             else
@@ -76,19 +76,21 @@ public class FSM_Base : MonoBehaviour
         }
     }
 
-    IEnumerator WaitForAnimation(MOTIONSTATE motion)
+    IEnumerator WaitForAnimation(float time)
     {
-        float animLength = _anim.GetCurrentAnimatorStateInfo(0).length;
-        Debug.Log(animLength);
+        //yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(0.1f);
 
-        if (motion == MOTIONSTATE.Idle || motion == MOTIONSTATE.Run)
+
+        if (currentMotionState == MOTIONSTATE.Idle || currentMotionState == MOTIONSTATE.Run)
         {
             yield return null;
         }
         else
         {
-            yield return new WaitForSeconds(1.0f);
-            Debug.Log("모션끝");
+            float animLength = _anim.GetCurrentAnimatorStateInfo(0).length;
+            Debug.Log(time);
+            yield return new WaitForSeconds(time - 0.1f);
             SetState(currentBaseState, MOTIONSTATE.Idle);
         }
     }
