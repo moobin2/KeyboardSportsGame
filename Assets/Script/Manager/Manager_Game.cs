@@ -22,6 +22,7 @@ public class Manager_Game : MonoBehaviour
         GameObject model = Resources.Load("Character/Model/Male White Naked") as GameObject;
         _player = Instantiate(model);
         _player.AddComponent<Controller_Player>();
+		_player.AddComponent<Item_Inventory>();
         _player.transform.position = Vector3.zero;
         _player.transform.localScale = Vector3.one;
         _player.SetActive(false);
@@ -32,5 +33,6 @@ public class Manager_Game : MonoBehaviour
         Manager_UI.Create();                                 // UI매니저, 씬매니저 생성
         Manager_GameScene.Create();
         Manager_Effect.Create();
+		Manager_Item.Create();
     }
 }

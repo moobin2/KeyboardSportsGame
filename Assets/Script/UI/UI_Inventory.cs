@@ -11,6 +11,7 @@ public class UI_Inventory : MonoBehaviour
 	private List<Texture> _viewTextureList;
 	private List<GameObject> _slotList;
 	private GameObject _slotBase;
+	private GameObject _currentSlot;
 	private GameObject _viewObjectZone;
 	private string _currentItem;
 	private int _index;
@@ -22,7 +23,7 @@ public class UI_Inventory : MonoBehaviour
 		_viewTextureList = new List<Texture>();
 		_slotList = new List<GameObject>();
 
-		_player = GameObject.Find("Player");
+		_player = Manager_Game.Player;
 		_inventory = _player.GetComponent<Item_Inventory>();
 		switch (this.gameObject.name)
 		{
@@ -43,18 +44,46 @@ public class UI_Inventory : MonoBehaviour
 				break;
 		}
 		_viewObjectZone.transform.position = new Vector3(2000, 2000, 2000);
-		
+
+		_slotBase = Resources.Load<GameObject>("GUI/Inventory/Slot");
+
+		#region 현재아이템 슬롯 만들기
+		ItemData itemData = Manager_Item.Instance.GetItemData(_currentItem);
+		_currentSlot = Instantiate(_slotBase);
+		_currentSlot.name = _currentItem;
+		_currentSlot.transform.SetParent(this.transform);
+		_currentSlot.transform.localPosition = Vector3.zero;
+		_currentSlot.transform.localScale = new Vector3(1, 1, 1);
+
+		//_viewTextureList.Add(Manager_Item.Instance.GetTexture(_playerInven[i]));
+		UITexture texture = _currentSlot.GetComponent<UITexture>();
+		//texture.mainTexture = _viewTextureList[i];
+		UILabel[] label = _currentSlot.GetComponentsInChildren<UILabel>();
+		for (int j = 0; j < label.Length; j++)
+		{
+			if (label[j].name == "ItemName")
+				label[j].text = itemData._name;
+			else
+				label[j].text = "착용중";
+		}
+		_slotList.Add(_currentSlot);
+		#endregion
+
+
 		Refresh();
 	}
 	private void Refresh()
 	{
 		Debug.Log("새로고침");
-		//if (_currentItem != _inventory.Data._currentItem[_index])
-		//{
-		//	/*
-		//		현재아이템 띄우기.
-		//	*/
-		//}
+		if (_currentItem != _inventory.Data._currentItem[_index])
+		{
+			/*
+				현재아이템 띄우기.
+			*/
+
+			
+		}
+		print(_playerInven.Count);
 		if (_itemCount != _playerInven.Count)
 		{
 			for (int i = _itemCount; i < _playerInven.Count; i++)
@@ -68,9 +97,10 @@ public class UI_Inventory : MonoBehaviour
 				gObj.name = _playerInven[i];
 				gObj.transform.SetParent(this.transform);
 				gObj.transform.localPosition = Vector3.zero;
-				_viewTextureList.Add(Manager_Item.Instance.GetTexture(_playerInven[i]));
+				gObj.transform.localScale = new Vector3(1, 1, 1);
+				//_viewTextureList.Add(Manager_Item.Instance.GetTexture(_playerInven[i]));
 				UITexture texture = gObj.GetComponent<UITexture>();
-				texture.mainTexture = _viewTextureList[i];
+				//texture.mainTexture = _viewTextureList[i];
 				UILabel[] label = gObj.GetComponentsInChildren<UILabel>();
 				for (int j = 0; j < label.Length; j++)
 				{
