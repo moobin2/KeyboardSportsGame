@@ -38,5 +38,6 @@ public class Item_Inventory : MonoBehaviour
 	{
 		TextAsset jsonText = (TextAsset)Resources.Load("JsonFiles/UserInfo");
 		_data = JsonUtility.FromJson<InventoryData>(jsonText.text);
+		print(_data._liftHairList.Count);
 	}
 }
