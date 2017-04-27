@@ -8,9 +8,14 @@ public class Controller_Player : Controller_Base
     public float moveSpeed = 2.0f;
 
     private int _nAttackCount = 0;
-    private float _fElapseTime = 0.5f;
-    private bool _bIsMoving = false;
+    private float _fElapseTime = 0.3f;
 	private Dictionary<char, Vector3> _dicKeyPosition;
+
+    [SerializeField]
+    private float _fAttackTime = 0.0f;
+    private bool _bIsMoving = false;
+    [SerializeField]
+    private bool _bIsAttack = false;
 
     // Use this for initialization
     void Awake()
@@ -32,13 +37,15 @@ public class Controller_Player : Controller_Base
 		_dicKeyPosition = new Dictionary<char, Vector3>();
 		Transform[] keyTrans = GameObject.Find("Keyboard_Button").GetComponentsInChildren<Transform>();
 
-		for (int i=1; i < keyTrans.Length; i++)
+		for (int i = 1; i < keyTrans.Length; i++)
 		{
 			_dicKeyPosition.Add(keyTrans[i].name[0].ToString().ToLower()[0], keyTrans[i].position);
 		}
 
         currentBaseMotion = BASESTATE.Flying;
         base.SetMotionState(MOTIONSTATE.Idle);
+
+        StartCoroutine("WaitForAttackCount");
     }
 
     // Update is called once per frame
@@ -110,30 +117,28 @@ public class Controller_Player : Controller_Base
 		}
 	}
 
-    void SetAttack()    // damaged 모션 추가해야함.
+    void SetAttack()
     {
-        //if(_fsmAnim.currentState == UnitState.Run || _fsmAnim.currentState == UnitState.Idle)
         if(_fsmAnim.CurrentMotionState == MOTIONSTATE.Run || _fsmAnim.CurrentMotionState == MOTIONSTATE.Idle)
         {
             // idle 또는 run 상태라면 iTween을 멈춰 제자리에 멈추게 한다.
             _bIsMoving = false;
+            _bIsAttack = true;
+            _fAttackTime = 0.0f;
             iTween.Stop(gameObject);
+            // 공격모션을 취하게 한다.
             switch (_nAttackCount)
             {
                 case 0:
-                    //_fsmAnim.SetState(UnitState.Attack2);
                     base.SetMotionState(MOTIONSTATE.Attack1);
                     break;
                 case 1:
-                    //_fsmAnim.SetState(UnitState.Attack3);
                     base.SetMotionState(MOTIONSTATE.Attack2);
                     break;
                 case 2:
-                    //_fsmAnim.SetState(UnitState.Attack1);
                     base.SetMotionState(MOTIONSTATE.Attack3);
                     break;
                 case 3:
-                    //_fsmAnim.SetState(UnitState.JumpAttack);
                     base.SetMotionState(MOTIONSTATE.JumpAttack);
                     break;
             }
@@ -145,8 +150,25 @@ public class Controller_Player : Controller_Base
         }
         else
         {
-            // run, idle모션이 아니면 공격모션에 들어오게한다.
             return;
+        }
+    }
+
+    IEnumerator WaitForAttackCount()
+    {
+        while(true)
+        {
+            if(_bIsAttack)
+            {
+                _fAttackTime += Time.deltaTime;
+                if(_fAttackTime > 1.0f + _fElapseTime)
+                {
+                    _fAttackTime = 0.0f;
+                    _nAttackCount = 0;
+                    _bIsAttack = false;
+                }
+            }
+            yield return null;
         }
     }
 }

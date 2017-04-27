@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Manager_MainScene : MonoBehaviour {
+public class Manager_MainScene : MonoBehaviour
+{
+    public GameObject objectPool;
 
-	// Use this for initialization
-	void Start ()
+    private Pool_Controller objPoolCtrl;
+
+    void Start()
     {
         this.gameObject.name = "[Manager]MainScene";
-        MainSceneInit();
 
+        objPoolCtrl = objectPool.GetComponent<Pool_Controller>();
+        MainSceneInit();
     }
 	
 	// Update is called once per frame
@@ -21,5 +25,7 @@ public class Manager_MainScene : MonoBehaviour {
     public void MainSceneInit()
     {
         Manager_Game.Player.GetComponent<Controller_Player>().Init();
+        objPoolCtrl.AddObjectPool("Arrow", "Weapon/Arrow", 10);
+        objPoolCtrl.AddObjectPool("Archer", "Character/Model", 4);
     }
 }
