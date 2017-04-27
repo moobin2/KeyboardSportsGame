@@ -7,7 +7,6 @@ public class Controller_Archer : Controller_EnemyBase
 {
     public GameObject objectContainer;
 
-    private FSM_Archer      _fsmAnim;
     private Pool_Controller _arrowPool;
 
 	// Use this for initialization
@@ -15,15 +14,19 @@ public class Controller_Archer : Controller_EnemyBase
     {
         base.Awake();
         _waitingTime = 3.0f;
-        _fsmAnim = GetComponent<FSM_Archer>();
-        //_fsmAnim.SetState(UnitState.Idle);
         _type = EnermyType.Archer;
+
+        this.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+    }
+
+    public void Init()
+    {
+        this.gameObject.SetActive(true);
+        base.Init();
 
         _arrowPool = objectContainer.GetComponent<Pool_Controller>();
 
         SetCrossbow();
-
-        this.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
         StartCoroutine("FindPlayer");
     }

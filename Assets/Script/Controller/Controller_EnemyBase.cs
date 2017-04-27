@@ -12,7 +12,7 @@ public enum EnermyType
     Warrior, Archer
 }
 
-public class Controller_EnemyBase : MonoBehaviour
+public class Controller_EnemyBase : Controller_Base
 {
     public GameObject       hairPos;            // 헤어 위치
     public GameObject       rightHandPos;       // 오른손 위치
@@ -29,8 +29,13 @@ public class Controller_EnemyBase : MonoBehaviour
     protected void Awake()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
-        SetEnemySkin();
     }
+
+    protected void Init()
+    {
+        SetEnemySkin();
+        base.Init();
+    } 
 
     protected void SetEnemySkin()
     {

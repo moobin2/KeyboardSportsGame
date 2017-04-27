@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Pool_Controller : MonoBehaviour
 {
-    public int arrowObjectSize;
-
     private Dictionary<string, List<GameObject>> _objPoolDic;
     public Dictionary<string, List<GameObject>> ObjectPool
     {
@@ -13,30 +11,35 @@ public class Pool_Controller : MonoBehaviour
     }
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         _objPoolDic = new Dictionary<string, List<GameObject>>();
 
         this.gameObject.name = "[Container]ObjectPool";
-
-        AddObjectPool("Arrow", "Weapon/Arrow", arrowObjectSize);
-
     }
 
-    void AddObjectPool(string objectName, string objectPath, int objectSize)
+    public void AddObjectPool(string objectName, string objectPath, int objectSize)
     {
         GameObject objectContainer = new GameObject();
         objectContainer.name = objectName;
         objectContainer.transform.SetParent(this.transform);
 
-        GameObject[] arrArrow = Resources.LoadAll<GameObject>(objectPath);
+        GameObject[] arrObj = Resources.LoadAll<GameObject>(objectPath);
         List<GameObject> objPoolList = new List<GameObject>();
 
         for (int i = 0; i < objectSize; ++i)
         {
-            GameObject tempObject = Instantiate(arrArrow[Random.Range(0, arrArrow.Length)]);
+            GameObject tempObject = Instantiate(arrObj[Random.Range(0, arrObj.Length)]);
             tempObject.name = objectName + "_" + i;
-            tempObject.AddComponent<Pool_Arrow>();
+
+            if(objectName == "Arrow")
+            {
+                tempObject.AddComponent<Pool_Arrow>();
+            }
+            else if (objectName == "Archer")
+            {
+                tempObject.AddComponent<Controller_Archer>();
+            }
             tempObject.transform.SetParent(objectContainer.transform);
             tempObject.transform.localPosition = Vector3.zero;
             tempObject.transform.localScale = new Vector3(3, 3, 3);
