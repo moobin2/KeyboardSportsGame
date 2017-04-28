@@ -14,12 +14,12 @@ public enum EnermyType
 
 public class Controller_EnemyBase : Controller_Base
 {
-    public GameObject       hairPos;            // 헤어 위치
-    public GameObject       rightHandPos;       // 오른손 위치
-    public GameObject       leftHandPos;        // 왼손 위치
     public float            moveSpeed;          // 이동 속도
     public float            attackRange;        // 공격 범위
 
+    protected GameObject    _hairPos;           // 헤어 위치
+    protected GameObject    _rightHandPos;      // 오른손 위치
+    protected GameObject    _leftHandPos;       // 왼손 위치
     protected EnermyGender  _gender;            // 몬스터 성별
     protected EnermyType    _type;              // 몬스터 타입
     protected GameObject    _player;            // 플레이어
@@ -28,13 +28,18 @@ public class Controller_EnemyBase : Controller_Base
 
     protected void Awake()
     {
+        base.Awake();
         _player = GameObject.FindGameObjectWithTag("Player");
+
+        _hairPos = this.transform.Find("RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigNeck/RigHead/Dummy Prop Head").gameObject;
+        _rightHandPos = this.transform.Find("RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLArmPalm/Dummy Prop Left").gameObject;
+        _leftHandPos = this.transform.Find("RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRArmPalm/Dummy Prop Right").gameObject;
     }
 
     protected void Init()
     {
-        SetEnemySkin();
         base.Init();
+        SetEnemySkin();
     } 
 
     protected void SetEnemySkin()
@@ -43,7 +48,18 @@ public class Controller_EnemyBase : Controller_Base
         _gender = (EnermyGender)Random.Range(0, 2);
 
         SetEnermyHair(enermyContainerPath, _gender);
-        SetEnermyBody(enermyContainerPath, _gender);
+        SetEnermyBody(enermyContainerPath,  _gender);
+    }
+
+    protected void DestroyChildObj(GameObject childObject)
+    {
+        // 붙일 위치의 자식이 없다면 끝
+        if (childObject.transform.childCount == 0)
+            return;
+
+        // 붙일 위치의 자식이 있다면 없애라
+        GameObject child = childObject.transform.GetChild(0).gameObject;
+        Destroy(child);
     }
 
     void SetEnermyHair(string enermyContainerPath, EnermyGender gender)
@@ -52,7 +68,10 @@ public class Controller_EnemyBase : Controller_Base
         GameObject[] arrEnermyHair = Resources.LoadAll<GameObject>(enermyContainerPath + "Hair/" + gender.ToString());
 
         GameObject Hair = Instantiate(arrEnermyHair[Random.Range(0, arrEnermyHair.Length)]);
-        Hair.transform.parent = hairPos.transform;
+
+        DestroyChildObj(_hairPos);
+
+        Hair.transform.parent = _hairPos.transform;
         Hair.transform.localPosition = Vector3.zero;
         Hair.transform.localRotation = Quaternion.identity;
         Hair.transform.localScale = Vector3.one;

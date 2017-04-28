@@ -44,7 +44,7 @@ public class Controller_Warrior : Controller_EnemyBase
         }
 
         GameObject sword = Instantiate(arrSword[Random.Range(0, arrSword.Length)]);
-        sword.transform.parent = rightHandPos.transform;
+        sword.transform.parent = _rightHandPos.transform;
         sword.transform.localPosition = Vector3.zero;
         sword.transform.localRotation = Quaternion.identity;
         sword.transform.localScale = Vector3.one;

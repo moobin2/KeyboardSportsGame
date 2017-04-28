@@ -6,6 +6,7 @@ public class Manager_MainScene : MonoBehaviour
 {
     public GameObject objectPool;
 
+    private float time;
     private Pool_Controller objPoolCtrl;
 
     void Start()
@@ -19,8 +20,9 @@ public class Manager_MainScene : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-		
-	}
+        time += Time.deltaTime;
+
+    }
 
     public void MainSceneInit()
     {
