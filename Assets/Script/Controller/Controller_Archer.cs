@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(FSM_Archer))]
 public class Controller_Archer : Controller_EnemyBase
 {
     public GameObject objectContainer;
@@ -36,7 +35,8 @@ public class Controller_Archer : Controller_EnemyBase
         GameObject[] arrCrossbow = Resources.LoadAll<GameObject>("Weapon/Crossbow");
 
         GameObject crossbow = Instantiate(arrCrossbow[Random.Range(0, arrCrossbow.Length)]);
-        crossbow.transform.parent = leftHandPos.transform;
+
+        crossbow.transform.parent = _leftHandPos.transform;
         crossbow.transform.localPosition = Vector3.zero;
         crossbow.transform.localRotation = Quaternion.Euler(-90, 0, 0);
         crossbow.transform.localScale = Vector3.one;
@@ -56,7 +56,7 @@ public class Controller_Archer : Controller_EnemyBase
     {
       //  _fsmAnim.SetState(UnitState.ArrowShoot);
         yield return new WaitForSeconds(0.15f);
-        _arrowPool.GetObjcet("Arrow").GetComponent<Pool_Arrow>().FireArrow(leftHandPos.transform.position, _player.transform.position);
+        _arrowPool.GetObjcet("Arrow").GetComponent<Pool_Arrow>().FireArrow(_leftHandPos.transform.position, _player.transform.position);
 
         StartCoroutine("FindPlayer");
     }
