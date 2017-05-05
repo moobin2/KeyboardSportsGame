@@ -12,6 +12,7 @@ public class Pool_Arrow : MonoBehaviour
     {
         _arrowSpeed = 1.0f;
         IsFire = false;
+        this.transform.localScale = new Vector3(3.0f, 3.0f, 3.0f);
     }
 
     public void FireArrow(Vector3 firePos, Vector3 targetPos)

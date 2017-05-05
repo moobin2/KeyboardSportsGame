@@ -36,13 +36,10 @@ public class Pool_Controller : MonoBehaviour
             {
                 tempObject.AddComponent<Pool_Arrow>();
             }
-            else if (objectName == "Archer")
-            {
-                tempObject.AddComponent<Controller_Archer>();
-            }
+
             tempObject.transform.SetParent(objectContainer.transform);
             tempObject.transform.localPosition = Vector3.zero;
-            tempObject.transform.localScale = new Vector3(3, 3, 3);
+            tempObject.transform.localScale = Vector3.one;
             tempObject.SetActive(false);
             objPoolList.Add(tempObject);
         }
