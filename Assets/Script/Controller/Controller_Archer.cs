@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Controller_Archer : Controller_EnemyBase
 {
-    public GameObject objectContainer;
-
     private Pool_Controller _arrowPool;
 
 	// Use this for initialization
@@ -15,15 +13,18 @@ public class Controller_Archer : Controller_EnemyBase
         _waitingTime = 3.0f;
         _type = EnermyType.Archer;
 
-        this.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
     }
 
     public void Init()
     {
         this.gameObject.SetActive(true);
         base.Init();
+        this.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
-        _arrowPool = objectContainer.GetComponent<Pool_Controller>();
+        if(_arrowPool == null)
+        {
+            _arrowPool = GameObject.FindGameObjectWithTag("ObjectPool").GetComponent<Pool_Controller>();
+        }
 
         SetCrossbow();
 

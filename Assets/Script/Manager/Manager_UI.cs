@@ -9,6 +9,7 @@ public class Manager_UI : Manager_Template<Manager_UI>
 
     private Dictionary<string, UIPanel_Base> uiPanelDic;    // UIPanel 딕셔너리
     private List<UIPanel_Base> activePanelList;             // 활성화된 패널 리스트
+    public List<UIPanel_Base> ActivePanelList { get { return activePanelList; } }
 
     protected override void Init()
     {
@@ -68,6 +69,12 @@ public class Manager_UI : Manager_Template<Manager_UI>
             case EGameScene.MAIN:
                 {
 
+                }
+                break;
+            case EGameScene.TEST_M:
+                {
+                    UIPanel_PlayerGauge.instance.showPanel();
+                    //UIPanel_Time.instance.showPanel();
                 }
                 break;
         }

@@ -25,6 +25,7 @@ public class Manager_Game : MonoBehaviour
 		_player.AddComponent<Item_Inventory>();
         _player.transform.position = Vector3.zero;
         _player.transform.localScale = Vector3.one;
+        _player.tag = "Player";
         _player.SetActive(false);
     }
 
