@@ -7,7 +7,7 @@ public class UIPanel_Time : UIPanel_Template<UIPanel_Time>
     private UILabel _label;
 
 	// Use this for initialization
-	void Awake ()
+	void Start ()
     {
         _label = GetComponent<UILabel>();
 	}

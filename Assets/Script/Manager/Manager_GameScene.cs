@@ -38,6 +38,7 @@ public class Manager_GameScene : Manager_Template<Manager_GameScene>
 
     public void ChangeScene(EGameScene scene)
     {
+        currentScene = scene;
         this.ChangeScene(scene, null, null);
     }
 
@@ -47,7 +48,7 @@ public class Manager_GameScene : Manager_Template<Manager_GameScene>
         {
             case EGameScene.TITLE:
                 {
-                    this.loadScene("", onComplete);
+                    this.loadScene("TitleScene", onComplete);
                 }
                 break;
             case EGameScene.MAIN:
@@ -89,6 +90,7 @@ public class Manager_GameScene : Manager_Template<Manager_GameScene>
         }
 
         Manager_UI.Instance.InitSceneUI(currentScene);
+        Debug.Log(currentScene.ToString() + "으로 씬변경중");
         // 로드가 끝난후 페이드 인 들어가게 바꾼다.
         this.fadeInOutCtrl.FadeIn(this.FadeInTime);
     }
