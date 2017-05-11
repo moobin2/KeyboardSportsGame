@@ -75,7 +75,7 @@ public class Manager_UI : Manager_Template<Manager_UI>
                 {
                     UIPanel_PlayerGauge.instance.showPanel();
                     UIPanel_Time.instance.showPanel();
-                    //UIPanel_Time.instance.showPanel();
+                    UIPanel_Coin.instance.showPanel();
                 }
                 break;
         }
